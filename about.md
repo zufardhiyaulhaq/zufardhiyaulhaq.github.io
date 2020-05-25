@@ -8,4 +8,4 @@ Cloud Platform Engineer @ Gojek. Very interested in Cloud Native & Cloud Computi
 
 ### Contact me
 
-[zufardhiya](mailto:email@domain.com)
+[zufardhiyaulhaq@gmail.com](mailto:zufardhiyaulhaq@gmail.com)
