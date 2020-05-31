@@ -50,8 +50,10 @@ docker-compose up -d
 
 - get minio IP
 {% highlight shell %}
+{% raw %}
 export MINIO_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' minio-storage)
 echo "Minio IP: $MINIO_IP"
+{% endraw %}
 {% endhighlight %}
 
 - create storage bucket
