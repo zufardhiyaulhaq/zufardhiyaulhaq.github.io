@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Install Istio 1.4.9 Multicluster Replicated Control Plane
+title: Install Istio Multicluster Replicated Control Plane
 ---
 
 Istio is a service mesh platform that can control and modify traffic policy behaviour in Kubernetes by injecting sidecar to a container. Multicluster Replicated Control Plane is an uses cases to enable communication between two service in two difference service meshes without using Ingress and can enable mutual TLS between the service.
@@ -11,7 +11,7 @@ Multicluster Replicated Control Plane allow your service to communicate each oth
 - virtualbox
 - minikube
 - kubectl
-- istioctl 1.4.9
+- istioctl 1.4.9 or 1.5.4
 - [step and step-ca](https://smallstep.com/docs/getting-started/#1-installing-step-and-step-ca)
 
 ### Bootstraping two Kubernetes clusters
@@ -25,9 +25,8 @@ minikube start --driver=virtualbox --force=true --kubernetes-version='1.15.11' -
 
 ### Generate Certificate with step and step-ca
 {% highlight shell %}
-step certificate create root-ca root-cert.pem root-key.pem --profile root-ca --kty RSA --no-password --insecure
-step certificate create intermediate-ca ca-cert.pem ca-key.pem \
-  --profile intermediate-ca --kty RSA --ca ./root-cert.pem --ca-key ./root-key.pem --no-password --insecure
+step certificate create zufar-root-ca root-cert.pem root-key.pem --profile root-ca  --kty RSA --no-password --insecure --not-after 87600h --san zufardhiyaulhaq.com
+step certificate create zufar-intermediate-ca ca-cert.pem ca-key.pem --profile intermediate-ca --kty RSA --ca ./root-cert.pem --ca-key ./root-key.pem --no-password --insecure --not-after 43800h --san zufardhiyaulhaq.com
 step certificate bundle ca-cert.pem root-cert.pem cert-chain.pem
 {% endhighlight %}
 
@@ -42,17 +41,13 @@ NAMESPACE=istio-system
 
 ## Install Istio
 
-Istioctl can use CRD named `IstioControlPlane` to create the cluster. We will use this CRD:
+Istioctl 1.4.9 use CRD named `IstioControlPlane` to create the cluster. We will use this CRD:
 {% highlight yml %}
 apiVersion: install.istio.io/v1alpha2
 kind: IstioControlPlane
 spec:
   coreDNS:
     enabled: true
-  gateways:
-    components:
-      egressGateway:
-          enabled: true
   values:
     istiocoredns:
       enabled: true
@@ -68,14 +63,58 @@ spec:
     security:
       selfSigned: false
     gateways:
-      istio-egressgateway:
-        enabled: true
-        type: ClusterIP
-        env:
-          ISTIO_META_REQUESTED_NETWORK_VIEW: "external"
       istio-ingressgateway:
         enabled: true
         type: NodePort
+{% endhighlight %}
+
+For Istio 1.5.4, use `IstioOperator`
+{% highlight yml %}
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  components:
+    pilot:
+      enabled: true
+      k8s:
+        replicaCount: 1
+        hpaSpec:
+          maxReplicas: 3
+          minReplicas: 1
+  addonComponents:
+    ingressGateways:
+      enabled: true
+      k8s:
+        replicaCount: 1
+        hpaSpec:
+          maxReplicas: 3
+          minReplicas: 1
+    prometheus:
+      enabled: true
+      k8s:
+        replicaCount: 1
+    kiali:
+      enabled: true
+      k8s:
+        replicaCount: 1
+    istiocoredns:
+      enabled: true
+      k8s:
+        replicaCount: 1
+  values:
+    global:
+      podDNSSearchNamespaces:
+        - global
+        - "{{ valueOrDefault .DeploymentMeta.Namespace \"default\" }}.global"
+      multiCluster:
+        enabled: true
+      controlPlaneSecurityEnabled: true
+    security:
+      selfSigned: false
+    gateways:
+      istio-ingressgateway:
+        type: NodePort
+        name: istio-ingressgateway
 {% endhighlight %}
 
 `IstioControlPlane` change to `IstioOperator` in 1.5 release. This CRD install kiali and change ingressgateway into NodePort. please adjust with your environment. Save this file as `istio.yaml`.
