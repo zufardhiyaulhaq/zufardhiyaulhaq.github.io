@@ -286,7 +286,7 @@ spec:
 {% endhighlight %}
 
 ### Testing
-We cannot se the mutual TLS communication because it is abstracted by Istio sidecar and Istio-ingressgateway. Client can use HTTP communication `http://helloworld.zufar.io` and Istio sidecar will upgrade to HTTPS and enable mutual TLS. To see the packet, we can use wireshark with (sniff to capture the packet)[https://zufardhiyaulhaq.com/capture-pod-traffic-with-ksniff/]. We can capture packet inside sidecar (istio-proxy) with this command from cluster A:
+We cannot se the mutual TLS communication because it is abstracted by Istio sidecar and Istio-ingressgateway. Client can use HTTP communication `http://helloworld.zufar.io` and Istio sidecar will upgrade to HTTPS and enable mutual TLS. To see the packet, we can use wireshark with [sniff to capture the packet](https://zufardhiyaulhaq.com/capture-pod-traffic-with-ksniff/). We can capture packet inside sidecar (istio-proxy) with this command from cluster A:
 
 {% highlight shell %}
 kubectl sniff POD_NAME -c istio-proxy -n client \
