@@ -37,7 +37,7 @@ services:
     restart: always
     volumes:
       - ./envoy/front-envoy.yaml:/etc/front-envoy.yaml
-      - /etc/letsencrypt/archive/zufardhiyaulhaq.com/cert1.pem:/etc/cert.pem
+      - /etc/letsencrypt/archive/zufardhiyaulhaq.com/fullcert1.pem:/etc/cert.pem
       - /etc/letsencrypt/archive/zufardhiyaulhaq.com/privkey1.pem:/etc/privkey.pem
 {% endhighlight %}
 
