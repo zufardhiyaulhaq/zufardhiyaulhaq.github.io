@@ -45,3 +45,37 @@ _acme-challenge.server.zufar.io 	IN CNAME abcd.auth.zufar.io.
 I use CoreDNS as the main DNS server in my lab. The configuration is pretty easy for me. You only need to provide the **Corefile** and **Zone file**. Also some modification in the docker entrypoint.
 
 <script src="https://gist.github.com/zufardhiyaulhaq/1768cbdd0041190da86c876778a0a519.js"></script>
+
+It is pretty simple right?
+
+## Setup step-ca
+Configuring step-ca probably is the most difficult one in this spike. In the **[official documentation running step-ca in docker](https://hub.docker.com/r/smallstep/step-ca)**, the first thing is we need to bootstrap the directory used by step-ca and run `step ca init` to create the whole infrastructure certificate like root CA and intermediate CA.
+
+There is a problem in my side because I already have self signed root CA created and mounted in all my VM. `step ca init` can support `--root` and `--key` flag for exisiting root CA.
+
+1. Create a directory in your machine where you want to run the step-ca via docker (this will be mounted to the container)
+2. for simplicity, copy your root certificate and root private key (this is not recomended, please check **[this document](https://github.com/smallstep/certificates/blob/master/docs/questions.md#i-already-have-pki-in-place-can-i-use-this-with-my-own-root-certificate)** on how the `step ca init` actually works)
+3. Run initial docker container to bootstrap the directory
+
+    {% highlight shell %}
+docker run -it -v $(pwd):/home/step smallstep/step-ca sh
+    {% endhighlight %}
+4. Run the init command
+
+    {% highlight shell %}
+step ca init --root=root-cert.pem --key=root-key.pem
+    {% endhighlight %}
+5. Note your password and root fingerprint, also create a password file in the `secrets` directory
+    {% highlight shell %}
+echo <your password here> > /home/step/secrets/password
+    {% endhighlight %}
+6. Enable ACME support
+    {% highlight shell %}
+step ca provisioner add acme --type ACME
+    {% endhighlight %}
+7. Exit the initial container for bootstraping
+    {% highlight shell %}
+exit
+    {% endhighlight %}
+
+
