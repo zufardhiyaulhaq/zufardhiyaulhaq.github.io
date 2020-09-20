@@ -28,6 +28,7 @@ below picture is the flow generate private certificate with private domain via c
 1. User register with acme-dns, acme-dns will expose an limited random domain (example: `abcd.auth.zufar.io`).
 2. acme-dns will return a JSON response contain a domain that exposed, username and password for API call to populate the domain with TXT record later.
 3. User create a CNAME record in **CoreDNS** based on limited random domain that acme-dns give to the user.
+
 {% highlight shell %}
 _acme-challenge.server.zufar.io 	IN CNAME abcd.auth.zufar.io.
 {% endhighlight %}
