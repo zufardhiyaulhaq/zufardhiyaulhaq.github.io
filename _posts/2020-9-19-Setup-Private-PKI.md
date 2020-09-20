@@ -20,7 +20,7 @@ For Kubernetes, I use **cert-manager**, a native Kubernetes certificate manageme
 
 ## Flow
 below picture is the flow generate private certificate with private domain via certbot. In this example I will use:
-- Certificate requested for server.zufar.io
+- Certificate requested for server-1.zufar.io
 - acme-dns resolve *.auth.zufar.io
 
 ![internal-pki]({{ site.baseurl }}/images/internal-pki.png)
@@ -29,13 +29,13 @@ below picture is the flow generate private certificate with private domain via c
 2. acme-dns will return a JSON response contain a domain that exposed, username and password for API call to populate the domain with TXT record later.
 3. User create a CNAME record in **CoreDNS** based on limited random domain that acme-dns give to the user.
 
-{% highlight shell %}
+    {% highlight shell %}
 _acme-challenge.server.zufar.io 	IN CNAME abcd.auth.zufar.io.
-{% endhighlight %}
+    {% endhighlight %}
 4. Certbot request an certificate to the certificate authority step-ca (example: `server.zufar.io`). step-ca will request the certbot to prove that user is authorized with HTTP01 or DNS01 challenge.
 5. Certbot will call acme-dns and populate the TXT record in `abcd.auth.zufar.io` with `key` that step-ca give.
 6. Certbot will create a private key, create a CSR and send to certificate authority step-ca to sign the CSR.
-7. step-ca will verify the authority by contacting DNS server to resolve `_acme-challenge.server.zufar.io` (CoreDNS in this case).
+7. step-ca will verify the authority by contacting DNS server to resolve `_acme-challenge.server-1.zufar.io` (CoreDNS in this case).
 8. CoreDNS will resolve to `abcd.auth.zufar.io`. CoreDNS will forward this request to acme-dns via `subzone delegation` concept.
 9. acme-dns resolve the DNS request and give the key in the TXT record
 10. CoreDNS will send the result to step-ca.
