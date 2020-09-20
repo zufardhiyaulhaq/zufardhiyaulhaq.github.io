@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Setup Private Public Key Infrastructure (PKI)
+title: Automatic Certificate creation in Private Public Key Infrastructure (PKI)
 ---
 
 Over the past one week ago, I try to spike and setup private PKI in my lab environment mostly for ingress and gateway testing. There is a reason why I don't go with public one like Let's Encrypt because you need to buy a domain and host in ACME supported DNS01 challenge like AWS route53 and the pricing is too high.
@@ -20,20 +20,22 @@ For Kubernetes, I use **cert-manager**, a native Kubernetes certificate manageme
 
 ## Flow
 below picture is the flow generate private certificate with private domain via certbot. In this example I will use:
-- Certificate requested for server-1.zufar.io
-- acme-dns resolve *.auth.zufar.io
+- Certificate requested for **server-1.zufar.io**
+- acme-dns resolve ***.auth.zufar.io**
 
 ![internal-pki]({{ site.baseurl }}/images/internal-pki.png)
 
-1. User register with acme-dns, acme-dns will expose an limited random domain (example: `abcd.auth.zufar.io`).
+1. User register with acme-dns, acme-dns will expose an limited random domain (example: `173a5dcb-4777-498d-9abd-87d84bb4fe54.auth.zufar.io`).
 2. acme-dns will return a JSON response contain a domain that exposed, username and password for API call to populate the domain with TXT record later.
 3. User create a CNAME record in **CoreDNS** based on limited random domain that acme-dns give to the user.
-    {% highlight shell %} _acme-challenge.server.zufar.io 	IN CNAME abcd.auth.zufar.io.{% endhighlight %}
+    ```bash
+     _acme-challenge.server.zufar.io 	IN CNAME 173a5dcb-4777-498d-9abd-87d84bb4fe54.auth.zufar.io.
+    ```
 4. Certbot request an certificate to the certificate authority step-ca (example: `server.zufar.io`). step-ca will request the certbot to prove that user is authorized with HTTP01 or DNS01 challenge.
-5. Certbot will call acme-dns and populate the TXT record in `abcd.auth.zufar.io` with `key` that step-ca give.
+5. Certbot will call acme-dns and populate the TXT record in `173a5dcb-4777-498d-9abd-87d84bb4fe54.auth.zufar.io` with `key` that step-ca give.
 6. Certbot will create a private key, create a CSR and send to certificate authority step-ca to sign the CSR.
 7. step-ca will verify the authority by contacting DNS server to resolve `_acme-challenge.server-1.zufar.io` (CoreDNS in this case).
-8. CoreDNS will resolve to `abcd.auth.zufar.io`. CoreDNS will forward this request to acme-dns via `subzone delegation` concept.
+8. CoreDNS will resolve to `173a5dcb-4777-498d-9abd-87d84bb4fe54.auth.zufar.io`. CoreDNS will forward this request to acme-dns via `subzone delegation` concept.
 9. acme-dns resolve the DNS request and give the key in the TXT record
 10. CoreDNS will send the result to step-ca.
 11. step-ca verify the authority of the domain, sign the CSR and send the cert to the certbot.
@@ -48,7 +50,7 @@ It is pretty simple right?
 ## Setup step-ca
 Configuring step-ca probably is the most difficult one in this spike. In the **[official documentation running step-ca in docker](https://hub.docker.com/r/smallstep/step-ca)**, the first thing is we need to bootstrap the directory used by step-ca and run `step ca init` to create the whole infrastructure certificate like root CA and intermediate CA.
 
-There is a problem in my side because I already have self signed root CA created and mounted in all my VM. `step ca init` can support `--root` and `--key` flag for exisiting root CA.
+There is a problem in my side because I already have self signed root CA created and mounted in all my VM. `step ca init` can support `--root` and `--key` flag for exisiting root CA. Follow this step to bootstrap initial directory:
 
 - Create a directory in your machine where you want to run the step-ca via docker (this will be mounted to the container)
 - for simplicity, copy your root certificate and root private key (this is not recomended, please check **[this document](https://github.com/smallstep/certificates/blob/master/docs/questions.md#i-already-have-pki-in-place-can-i-use-this-with-my-own-root-certificate)** on how the `step ca init` actually works)
@@ -63,4 +65,48 @@ There is a problem in my side because I already have self signed root CA created
 - Exit the initial container for bootstraping
     {% highlight shell %} exit{% endhighlight %}
 
+After that, we can run with docker-compose:
+<script src="https://gist.github.com/zufardhiyaulhaq/a03e3f782f7aed7623223554b22973ff.js"></script>
 
+Try to curl the step-ca
+{% highlight shell %}
+curl https://ca.zufar.io/acme/acme/directory 
+
+{"newNonce":"https://ca.zufar.io/acme/acme/new-nonce","newAccount":"https://ca.zufar.io/acme/acme/new-account","newOrder":"https://ca.zufar.io/acme/acme/new-order","revokeCert":"https://ca.zufar.io/acme/acme/revoke-cert","keyChange":"https://ca.zufar.io/acme/acme/key-change"}
+{% endhighlight %}
+
+## Setup acme-dns
+We use acme-dns to store the `key` in TXT record automatically with API call. `CoreDNS` will translate the ACME magic domain into domain in the acme-dns (check the flow). `acme-dns` API will listen in `https://auth.zufar.io`. So you need to create a certificate from the root CA and mount that to the acme-dns container.
+
+<script src="https://gist.github.com/zufardhiyaulhaq/9f51bbf60281620e118c10fe25174122.js"></script>
+
+When its finish, you can try to register a domain through the API (you must limit this if acme-dns access publicly)
+
+{% highlight shell %}
+curl -X POST https://auth.zufar.io/register -H "Content-Type: application/json" 
+{% endhighlight %}
+
+It will return a JSON response
+{% highlight json %}
+{
+    "username": "963b23b3-bba7-4adb-ab2f-6fc6b03e8b97",
+    "password": "Isc2jFjmKF3Y7KPB5f33Y-R_1om1J5qMpwpbxw8_",
+    "fulldomain": "173a5dcb-4777-498d-9abd-87d84bb4fe54.auth.zufar.io",
+    "subdomain": "173a5dcb-4777-498d-9abd-87d84bb4fe54",
+    "allowfrom": []
+}
+{% endhighlight %}
+
+certbot with [acme-dns-certbot-hook](https://github.com/joohoi/acme-dns-certbot-joohoi) or [cert-manager](https://cert-manager.io/docs/configuration/acme/dns01/acme-dns/) support acme-dns for automatically register the TXT via API in the domain that acme-dns created (in this cases `173a5dcb-4777-498d-9abd-87d84bb4fe54.auth.zufar.io`). We need to change the structure of the JSON file and use the file in the certbot hook or cert-manager:
+
+{% highlight json %}
+{
+    "server-1.zufar.io": {
+        "username": "963b23b3-bba7-4adb-ab2f-6fc6b03e8b97",
+        "password": "Isc2jFjmKF3Y7KPB5f33Y-R_1om1J5qMpwpbxw8_",
+        "fulldomain": "173a5dcb-4777-498d-9abd-87d84bb4fe54.auth.zufar.io",
+        "subdomain": "173a5dcb-4777-498d-9abd-87d84bb4fe54",
+        "allowfrom": []
+    }
+}
+{% endhighlight %}
