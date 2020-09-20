@@ -28,10 +28,7 @@ below picture is the flow generate private certificate with private domain via c
 1. User register with acme-dns, acme-dns will expose an limited random domain (example: `abcd.auth.zufar.io`).
 2. acme-dns will return a JSON response contain a domain that exposed, username and password for API call to populate the domain with TXT record later.
 3. User create a CNAME record in **CoreDNS** based on limited random domain that acme-dns give to the user.
-
-    {% highlight shell %}
-_acme-challenge.server.zufar.io 	IN CNAME abcd.auth.zufar.io.
-    {% endhighlight %}
+    {% highlight shell %} _acme-challenge.server.zufar.io 	IN CNAME abcd.auth.zufar.io.{% endhighlight %}
 4. Certbot request an certificate to the certificate authority step-ca (example: `server.zufar.io`). step-ca will request the certbot to prove that user is authorized with HTTP01 or DNS01 challenge.
 5. Certbot will call acme-dns and populate the TXT record in `abcd.auth.zufar.io` with `key` that step-ca give.
 6. Certbot will create a private key, create a CSR and send to certificate authority step-ca to sign the CSR.
@@ -53,29 +50,17 @@ Configuring step-ca probably is the most difficult one in this spike. In the **[
 
 There is a problem in my side because I already have self signed root CA created and mounted in all my VM. `step ca init` can support `--root` and `--key` flag for exisiting root CA.
 
-1. Create a directory in your machine where you want to run the step-ca via docker (this will be mounted to the container)
-2. for simplicity, copy your root certificate and root private key (this is not recomended, please check **[this document](https://github.com/smallstep/certificates/blob/master/docs/questions.md#i-already-have-pki-in-place-can-i-use-this-with-my-own-root-certificate)** on how the `step ca init` actually works)
-3. Run initial docker container to bootstrap the directory
-
-    {% highlight shell %}
-docker run -it -v $(pwd):/home/step smallstep/step-ca sh
-    {% endhighlight %}
-4. Run the init command
-
-    {% highlight shell %}
-step ca init --root=root-cert.pem --key=root-key.pem
-    {% endhighlight %}
-5. Note your password and root fingerprint, also create a password file in the `secrets` directory
-    {% highlight shell %}
-echo <your password here> > /home/step/secrets/password
-    {% endhighlight %}
-6. Enable ACME support
-    {% highlight shell %}
-step ca provisioner add acme --type ACME
-    {% endhighlight %}
-7. Exit the initial container for bootstraping
-    {% highlight shell %}
-exit
-    {% endhighlight %}
+- Create a directory in your machine where you want to run the step-ca via docker (this will be mounted to the container)
+- for simplicity, copy your root certificate and root private key (this is not recomended, please check **[this document](https://github.com/smallstep/certificates/blob/master/docs/questions.md#i-already-have-pki-in-place-can-i-use-this-with-my-own-root-certificate)** on how the `step ca init` actually works)
+- Run initial docker container to bootstrap the directory
+    {% highlight shell %} docker run -it -v $(pwd):/home/step smallstep/step-ca sh {% endhighlight %}
+- Run the init command
+    {% highlight shell %} step ca init --root=root-cert.pem --key=root-key.pem {% endhighlight %}
+- Note your password and root fingerprint, also create a password file in the `secrets` directory
+    {% highlight shell %} echo <your password here> > /home/step/secrets/password {% endhighlight %}
+- Enable ACME support
+    {% highlight shell %} step ca provisioner add acme --type ACME {% endhighlight %}
+- Exit the initial container for bootstraping
+    {% highlight shell %} exit{% endhighlight %}
 
 
