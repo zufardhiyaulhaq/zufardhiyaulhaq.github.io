@@ -3,9 +3,9 @@ layout: post
 title: Leverage Single Sign-On with oauth2-proxy and Istio
 ---
 
-<iframe width="750" height="315" src="https://www.youtube.com/embed/kfYjuouU5JU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 Not every application we found has a single sign-on build-in feature, this is a little tricky if you want to make it public but only want to provide access to the authenticated user. Luckily, there is an open-source project call oauth2-proxy that acts as a middleware as an authenticating system.
+
+<iframe width="750" height="315" src="https://www.youtube.com/embed/kfYjuouU5JU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 From my understanding, only using oauth2-proxy is not enough, because every application should have an oauth2-proxy service in front of them. With Istio, we can use a single oauth2-proxy for every endpoint/service/domain that we want to expose to the public.
 
