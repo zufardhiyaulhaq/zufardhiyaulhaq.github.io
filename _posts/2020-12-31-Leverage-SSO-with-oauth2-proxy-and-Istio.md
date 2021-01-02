@@ -185,3 +185,12 @@ spec:
 {% endhighlight %}
 
 the most important part is the SNI matching only your service and `server_uri` which is your oauth2-proxy service. After applying this, when you access the service, it will force you to login before sending to the upstream service which is Kubernetes dashboard.
+
+The concept behind External Authorization is istio:
+
+1. first-time requests, packet go to Istio ingressgateway, got forwarded to oauth2-proxy service via external authz envoyfilter
+2. oauth2-proxy check that authentication is missing, force client to log in and redirected to the authentication provider
+3. client login, login success, the OAuth tokens are stored in the configured session store (cookie or Redis in oauth2-proxy) and a cookie is set in the client
+4. client get callback URL
+5. client do requests again, go to istio ingressgateway, forwarded to oauth2-proxy
+6. oauth2-proxy verify the credentials, return 200 OK to Istio, Istio forward to upstream
