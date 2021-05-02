@@ -29,7 +29,7 @@ frontend istio-gateway
 backend istio-gateway
         http-request set-header Host helloworld.zufardhiyaulhaq.tech
         server helloworld helloworld.zufardhiyaulhaq.tech:443 ssl sni str(helloworld.zufardhiyaulhaq.tech) verify none
-{% highlight shell %}
+{% endhighlight %}
 
 - `http-request set-header Host domain` is to make sure every request forwarded from HAProxy to Istio gateway have `Host` header. This is very important if you applied allowlisting based on domain in the Istio side.
 - `ssl sni str(domain)` is to make sure that TLS handshake between haproxy to Istio gateway is using SNI.
@@ -43,7 +43,7 @@ backend istio-gateway
 
         http-request set-header Host helloworld.zufardhiyaulhaq.tech
         server helloworld helloworld.zufardhiyaulhaq.tech:443 check check-ssl check-sni helloworld.zufardhiyaulhaq.tech ssl sni str(helloworld.zufardhiyaulhaq.tech) verify none
-{% highlight shell %}
+{% endhighlight %}
 
 - `option httpchk` will check with `GET` method on `/` with `Host` header.
 - `check check-ssl check-sni domain` will enable the healthcheck.
