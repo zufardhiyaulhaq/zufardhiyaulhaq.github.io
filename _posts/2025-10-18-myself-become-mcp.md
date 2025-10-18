@@ -174,7 +174,7 @@ with the first request, LLM will response with this:
     "total_tokens": 749
   }
 }
-{% highlight json %}
+{% endhighlight %}
 
 If you check, LLM required another data which MCP need to get. LLM logic ask MCP to get the log of the pods. As an MCP, we can call Kubernetes API and get the logs of the pods. After we get the logs, we need to call LLM again and provide the data.
 
