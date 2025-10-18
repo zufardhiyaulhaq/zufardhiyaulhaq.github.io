@@ -132,8 +132,15 @@ Let's says we want to build MCP server that can troubleshoot Kubernetes. MCP ext
 }
 {% endhighlight %}
 
-This tell that LLM can response to MCP server and ask MCP server to execute the function to get more data to complete the troubleshooting. LLM will response with this
+This tell that LLM can response to MCP server and ask MCP server to execute the function to get more data to complete the troubleshooting. 
 
+In this case, MCP server can provide several data
+1. pod logs via get_kubernetes_pod_logs
+2. run postgresql query via run_postgres_query
+3. get pod cpu data via get_kubernetes_pod_cpu_data
+4. get pod memory data via get_kubernetes_pod_memory_data
+
+with the first request, LLM will response with this:
 {% highlight json %}
 {
   "created": 1760801343,
