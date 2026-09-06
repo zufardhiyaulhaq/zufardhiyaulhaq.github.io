@@ -1,0 +1,51 @@
+# Work — edit here to add / reorder projects.
+# products: live things with a URL.  opensource: repos (lang + stars).
+
+products:
+  - name: fastgateway.dev
+    url: https://fastgateway.dev
+    description: >-
+      Gateway API management, minus the YAML — a visual control plane for
+      routing, policy, approvals, and multi-cluster governance.
+  - name: decidenext.app
+    url: https://decidenext.app
+    description: >-
+      Collaborative task prioritization with ICE, RICE, MoSCoW, and WSJF.
+      Real-time voting, no signup, consensus without the meeting.
+
+opensource:
+  - name: frp-operator
+    url: https://github.com/zufardhiyaulhaq/frp-operator
+    lang: Go
+    stars: 79
+    description: >-
+      Expose Kubernetes services to the internet with open-source FRP —
+      tunnels defined as native resources.
+  - name: istio-ratelimit-operator
+    url: https://github.com/zufardhiyaulhaq/istio-ratelimit-operator
+    lang: Go
+    stars: 51
+    description: >-
+      Automate Istio rate limiting with EnvoyFilter versioning — declarative
+      limits without hand-writing filters.
+  - name: Kato
+    url: https://github.com/zufardhiyaulhaq/Kato
+    lang: Go
+    stars: 8
+    description: >-
+      Kubernetes troubleshooting as declarative UseCase flows — LLMs summarize
+      the findings, but never decide what to investigate.
+  - name: community-ops
+    url: https://github.com/zufardhiyaulhaq/community-ops
+    lang: Python
+    stars: 31
+    description: >-
+      GitOps for many Kubernetes clusters with ArgoCD and Helmfile — one
+      repository, a fleet under control.
+  - name: safekubectl
+    url: https://github.com/zufardhiyaulhaq/safekubectl
+    lang: Go
+    stars: 3
+    description: >-
+      A kubectl wrapper that guards destructive commands with confirmation and
+      audit logs — for the day you paste into prod.

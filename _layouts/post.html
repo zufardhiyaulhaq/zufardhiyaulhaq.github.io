@@ -1,17 +1,26 @@
 ---
 layout: default
 ---
-
-<article class="post">
-  <h1>{{ page.title }}</h1>
-
-  <div class="entry">
-    {{ content }}
-  </div>
-
-  <div class="date">
-    Written on {{ page.date | date: "%B %e, %Y" }}
-  </div>
-
-  {% include disqus.html %}
-</article>
+<div class="page-wrap">
+  {% include site-header.html %}
+  <main class="page-main">
+    <article class="container-narrow">
+      <a class="post-back" href="{{ '/writing/' | relative_url }}">
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M5 1L1 5l4 4M16 5H2" stroke="currentColor" stroke-width="1.4"/></svg>
+        Writing
+      </a>
+      <header class="post-header">
+        <div class="meta">
+          <span>{{ page.date | date: "%b %-d, %Y" }}</span>
+          {% if page.tags %}<span>·</span>{% for t in page.tags %}<span>{{ t }}</span>{% endfor %}{% endif %}
+        </div>
+        <h1>{{ page.title }}</h1>
+        {% if page.tags %}<div class="taglist">{% for t in page.tags %}<span class="tag">{{ t }}</span>{% endfor %}</div>{% endif %}
+      </header>
+      <div class="prose">
+        {{ content }}
+      </div>
+    </article>
+  </main>
+  {% include site-footer.html %}
+</div>

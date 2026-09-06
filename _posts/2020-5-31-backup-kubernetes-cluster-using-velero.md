@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Backup Kubernetes Cluster using Velero
+tags: [kubernetes, tooling]
 ---
 
 Velero gives you tools to back up and restore your Kubernetes cluster resources and persistent volumes. Velero have ability to backup cluster, migrate cluster resource to other cluster, and also replicate cluster to other cluster.

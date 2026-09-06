@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Leverage Single Sign-On with oauth2-proxy and Istio
+tags: [istio, security]
 ---
 
 Not every application we found has a single sign-on build-in feature, this is a little tricky if you want to make it public but only want to provide access to the authenticated user. Luckily, there is an open-source project call oauth2-proxy that acts as a middleware as an authenticating system.

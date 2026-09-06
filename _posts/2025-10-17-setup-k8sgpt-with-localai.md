@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Setup k8sgpt with LocalAI
+tags: [ai, kubernetes]
 ---
 
 I have been exploring AI SRE and i stumble across tools call k8sgpt. k8sgpt is open source tooling that can help us troubleshooting Kubernetes with help of LLM like OpenAI. k8sgpt can run locally with CLI but can also be installed as Kubernetes Operator and can automatically scan your cluster and provide result in CRDs format.

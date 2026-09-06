@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Replacing Istio CA Certificate
+tags: [istio, security]
 ---
 
 Istio CA certificate is the most sensitive object in Istio. When enable multicluster shared control plane, the CA certificate got shared on multiple cluster. Once this certificate leak out to public, there is no way but replacing the old CA certificate with the new one.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Managing tools version using asdf
+tags: [tooling]
 ---
 
 Since my job is mainly related to cloud stuff, I need to change tools version multiple time. Some tools like kubectl, istioctl, and helm have multiple version and behave different between the version. Changing version of these tools is not easy and repetitive task.

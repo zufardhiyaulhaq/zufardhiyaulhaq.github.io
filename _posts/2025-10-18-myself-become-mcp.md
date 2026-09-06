@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Myself become MCP
+tags: [ai]
 ---
 
 Until this blog is written, I actually still confuse about how MCP (Model Context Protocol) working behind the scene. MCP extend /v1/chat/completions that is available in most of LLM provider and provide several tools that LLM can use.

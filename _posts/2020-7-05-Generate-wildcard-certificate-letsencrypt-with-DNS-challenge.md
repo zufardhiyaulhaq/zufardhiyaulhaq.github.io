@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Generate wildcard certificate Let's Encrypt with DNS challenge
+tags: [security]
 ---
 
 Let's Encrypt already support generating wildcard certificate for your domain since 2018. This article will help you generate wildcard certificate without setup web server and prefer using DNS challenge

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Install Istio Multicluster Replicated Control Plane
+tags: [istio, kubernetes]
 ---
 
 Istio is a service mesh platform that can control and modify traffic policy behaviour in Kubernetes by injecting sidecar to a container. Multicluster Replicated Control Plane is an uses cases to enable communication between two service in two difference service meshes without using Ingress and can enable mutual TLS between the service.

@@ -1,0 +1,16 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-cta">
+      <p class="say">Say hello&nbsp;&mdash; <a href="mailto:{{ site.footer-links.email }}">{{ site.footer-links.email }}</a></p>
+      <div class="footer-socials">
+        {% if site.footer-links.github %}<a href="https://github.com/{{ site.footer-links.github }}">{% include social-icons.html which="github" %}GitHub</a>{% endif %}
+        {% if site.footer-links.linkedin %}<a href="https://www.linkedin.com/in/{{ site.footer-links.linkedin }}">{% include social-icons.html which="linkedin" %}LinkedIn</a>{% endif %}
+        {% if site.footer-links.twitter %}<a href="https://twitter.com/{{ site.footer-links.twitter }}">{% include social-icons.html which="x" %}X</a>{% endif %}
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; {{ site.time | date: "%Y" }} {{ site.name }}</span>
+      <span>Built with Jekyll · GitHub Pages</span>
+    </div>
+  </div>
+</footer>

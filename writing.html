@@ -1,0 +1,32 @@
+---
+layout: page
+title: Writing
+permalink: /writing/
+nav: writing
+---
+{% assign ordered = "istio,security,kubernetes,networking,ai,observability,tooling,hardware" | split: "," %}
+<div class="page-head">
+  <p class="eyebrow">Writing · {{ site.posts | size }} notes</p>
+  <h1 class="page-title">Things I broke, and how I fixed them.</h1>
+  <p class="page-lead">Field notes on service meshes, Kubernetes, certificates, and lately, letting AI do the troubleshooting. Filter by what you came for.</p>
+</div>
+
+<div class="filter" role="group" aria-label="Filter writing by tag">
+  <span class="filter-label">Filter</span>
+  <button class="chip is-active" data-tag="all" aria-pressed="true">All<span class="count">{{ site.posts | size }}</span></button>
+  {% for tag in ordered %}{% assign n = site.tags[tag] | size %}{% if n > 0 %}
+  <button class="chip" data-tag="{{ tag }}" aria-pressed="false">{{ tag }}<span class="count">{{ n }}</span></button>
+  {% endif %}{% endfor %}
+</div>
+
+<div class="entry-list">
+  {% for post in site.posts %}
+  <a class="entry" href="{{ post.url | relative_url }}" data-tags="{{ post.tags | join: ' ' }}">
+    <span class="when">{{ post.date | date: "%b %Y" }}</span>
+    <span class="body"><h3>{{ post.title }}</h3></span>
+    <span class="taglist">{% for t in post.tags %}<span class="tag">{{ t }}</span>{% endfor %}</span>
+  </a>
+  {% endfor %}
+</div>
+
+<p class="filter-empty" hidden>No notes with that tag yet. Try another.</p>
