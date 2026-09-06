@@ -26,6 +26,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   --card:        #FFFFFF;
   --card-accent: #ECEFFF;
   --card-line-accent: #CBD3FF;
+  --card-warm:   #F7F0DE;
+  --card-warm-line: #EADFBF;
+  --warm-ink:    #927212;
   --shadow-card: 0 1px 2px rgba(20, 20, 25, 0.035);
 
   --font-sans: "Schibsted Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -130,31 +133,38 @@ a:focus-visible, button:focus-visible, .chip:focus-visible {
 body.is-home { height: 100%; overflow: hidden; }
 html:has(body.is-home) { height: 100%; }
 
+/* faint diagonal hatch behind the cards */
+body.is-home::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(45deg, transparent 0 21px, rgba(20, 20, 25, 0.022) 21px 22px);
+}
+
+/* one continuous dense bento, panned left -> right */
 .home {
-  display: flex;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-auto-flow: column dense;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  grid-auto-columns: clamp(232px, 21vw, 296px);
+  gap: 14px;
   height: 100dvh;
-  width: 100vw;
+  padding: calc(var(--header-h) + 1.3rem) var(--pad-x) 3.6rem;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-snap-type: x proximity;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  cursor: grab;
 }
 .home::-webkit-scrollbar { display: none; }
+.home.is-grabbing { cursor: grabbing; }
 
-.panel {
-  flex: 0 0 100vw;
-  height: 100dvh;
-  scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: calc(var(--header-h) + 2.2rem) var(--pad-x) 6.5rem;
-  position: relative;
-  overflow-y: auto;
-  scrollbar-width: none;
-}
-.panel::-webkit-scrollbar { display: none; }
+/* bento span helpers */
+.b-tall { grid-row: span 3; }
+.b-med  { grid-row: span 2; }
+.b-wide { grid-column: span 2; }
+.b-big  { grid-row: span 2; grid-column: span 2; }
 
 /* per-panel coordinate marker, top-left of content */
 .panel-index {
@@ -372,11 +382,12 @@ html:has(body.is-home) { height: 100%; }
 /* ----- Bento cards (home) --------------------------------------------- */
 .bento {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1280px;
+  height: min(80vh, 720px);
   margin: 0 auto;
   display: grid;
-  gap: 14px;
-  align-content: center;
+  gap: 13px;
+  align-content: stretch;
 }
 .card {
   background: var(--card);
@@ -405,11 +416,60 @@ a.card { text-decoration: none; transition: border-color 0.25s var(--ease), tran
 a.card:hover { border-color: var(--line-strong); transform: translateY(-2px); }
 .card--accent { background: var(--card-accent); border-color: var(--card-line-accent); }
 .card--accent .card-label { color: var(--accent); }
+.card--warm { background: var(--card-warm); border-color: var(--card-warm-line); }
+.card--warm .card-label { color: var(--warm-ink); }
 
 /* Intro card */
+.card-intro { justify-content: center; }
 .card-intro .hero-lead { margin-bottom: 1rem; }
-.card-intro .hero-statement { max-width: 22ch; }
-.card-intro .hero-sub { margin-top: 1.4rem; }
+.card-intro .hero-statement { max-width: 20ch; font-size: clamp(1.7rem, 2.4vw, 2.5rem); }
+.card-intro .hero-sub { margin-top: 1.2rem; font-size: 0.98rem; }
+
+/* live local clock (in the header) */
+.clock {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.clock b { font-weight: 500; color: var(--ink-soft); }
+
+/* horizontal scroll progress + hint (home only) */
+.hscroll {
+  position: fixed;
+  left: var(--pad-x); right: var(--pad-x);
+  bottom: 22px;
+  height: 2px;
+  background: var(--line);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 40;
+}
+.hscroll-fill {
+  height: 100%; width: 0;
+  background: var(--accent);
+  transition: width 0.1s linear;
+}
+.scroll-hint {
+  position: fixed;
+  right: var(--pad-x);
+  bottom: 32px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted);
+  z-index: 40;
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  transition: opacity 0.5s var(--ease);
+}
+.scroll-hint.is-hidden { opacity: 0; pointer-events: none; }
+.scroll-hint .arrow { position: relative; width: 26px; height: 1px; background: var(--line-strong); overflow: hidden; }
+.scroll-hint .arrow::after {
+  content: ""; position: absolute; left: 0; top: 0; width: 12px; height: 1px;
+  background: var(--accent); animation: hintslide 2.2s var(--ease) infinite;
+}
+@keyframes hintslide { 0% { transform: translateX(-14px); } 100% { transform: translateX(28px); } }
 
 /* mini fact cards */
 .card-fact .fact-v {
@@ -419,6 +479,7 @@ a.card:hover { border-color: var(--line-strong); transform: translateY(-2px); }
   letter-spacing: -0.015em;
   color: var(--ink);
   margin-top: auto;
+  margin-bottom: auto;
 }
 .card-fact .fact-v .at { color: var(--muted); }
 
@@ -426,12 +487,31 @@ a.card:hover { border-color: var(--line-strong); transform: translateY(-2px); }
 .card-photo { padding: 0; overflow: hidden; }
 .card-photo img {
   width: 100%; height: 100%;
-  min-height: 300px;
+  min-height: 0;
   object-fit: cover;
+  object-position: center 25%;
   filter: grayscale(1) contrast(1.02);
   transition: filter 0.6s var(--ease);
 }
 .card-photo:hover img { filter: grayscale(0); }
+
+/* combined role + location card */
+.card-fact .loc {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.86rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* skills list card */
+.card-skills .card-label { margin-bottom: 1.1rem; }
+.card-skills .skills {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+.card-skills .skills b { color: var(--ink); font-weight: 500; }
 
 /* bio card */
 .card-bio h2 {
@@ -525,6 +605,7 @@ a.card-allnotes:hover .big svg { transform: translateX(4px); }
 .card-hello .hello-big a:hover::after { transform: scaleX(1); }
 .card-socials .social-row {
   margin-top: auto;
+  margin-bottom: auto;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
@@ -539,15 +620,55 @@ a.card-allnotes:hover .big svg { transform: translateX(4px); }
 .card-socials .social-row a:hover { color: var(--accent); }
 .card-socials .social-row svg { width: 17px; height: 17px; flex: none; }
 
-/* per-panel bento grids */
-.bento--intro { grid-template-columns: 1.6fr 1fr; grid-auto-rows: minmax(0, auto); }
-.bento--intro .card-intro { grid-row: 1 / 3; }
-.bento--about { grid-template-columns: 300px 1fr; }
-.bento--now { grid-template-columns: 1.25fr 1fr; }
-.bento--now .card--accent { grid-row: 1 / 3; }
-.bento--writing { grid-template-columns: repeat(3, 1fr); }
-.bento--writing .card-allnotes { grid-column: 1 / -1; }
-.bento--hello { grid-template-columns: 1.4fr 1fr; }
+/* stat cards (big number) */
+.card-stat { justify-content: space-between; }
+.card-stat .stat-num {
+  font-weight: 500;
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-top: auto;
+}
+.card-stat .stat-sub { margin-top: 0.55rem; font-size: 0.86rem; line-height: 1.4; color: var(--ink-soft); }
+.card-stat.card--accent .stat-num { color: var(--accent); }
+
+/* talk cards */
+.card-talk { justify-content: flex-start; }
+.card-talk .where {
+  font-family: var(--font-mono);
+  font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.7rem;
+}
+.card-talk h3 {
+  font-weight: 500; font-size: 1.02rem; line-height: 1.24;
+  letter-spacing: -0.01em; color: var(--ink); margin-bottom: auto;
+}
+.card-talk .watch {
+  margin-top: 0.9rem;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--muted);
+  display: inline-flex; align-items: center; gap: 0.4rem;
+}
+a.card-talk:hover .watch { color: var(--accent); }
+a.card-talk:hover h3 { color: var(--accent); }
+
+/* per-panel bento grids — sized to fill the viewport */
+.bento--intro    { grid-template-columns: 1.5fr 1fr; grid-template-rows: repeat(3, 1fr); }
+.bento--intro    .card-intro { grid-column: 1; grid-row: 1 / 4; justify-content: center; }
+
+.bento--about    { grid-template-columns: 300px 1fr 1fr; grid-template-rows: 1.15fr 1fr; }
+.bento--about    .card-photo { grid-column: 1; grid-row: 1 / 3; }
+.bento--about    .card-bio   { grid-column: 2 / 4; grid-row: 1; }
+
+.bento--now      { grid-template-columns: 1.25fr 1fr; grid-template-rows: repeat(2, 1fr); }
+.bento--now      .card--accent { grid-column: 1; grid-row: 1 / 3; }
+
+.bento--writing  { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+.bento--speaking { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+
+.bento--hello    { grid-template-columns: 1.35fr 1fr; grid-template-rows: repeat(2, 1fr); }
+.bento--hello    .card-hello { grid-column: 1; grid-row: 1 / 3; }
 
 /* ----- The ruler (home signature) ------------------------------------- */
 .ruler {
@@ -975,43 +1096,25 @@ a.card-allnotes:hover .big svg { transform: translateX(4px); }
 
   body.is-home { overflow: auto; height: auto; }
   html:has(body.is-home) { height: auto; }
+  body.is-home::before { position: absolute; }
+
+  /* the dense bento unstacks into one readable column */
   .home {
-    display: block;
-    width: 100%;
+    grid-auto-flow: row;
+    grid-template-rows: none;
+    grid-template-columns: 1fr;
+    grid-auto-columns: auto;
     height: auto;
+    max-width: 560px;
+    margin: 0 auto;
     overflow: visible;
-    scroll-snap-type: none;
+    cursor: auto;
+    padding: calc(var(--header-h) + 2.2rem) var(--pad-x) 4rem;
   }
-  .panel {
-    flex: none;
-    width: 100%;
-    height: auto;
-    min-height: auto;
-    justify-content: flex-start;
-    padding: calc(var(--header-h) + 3rem) var(--pad-x) 3rem;
-    border-top: 1px solid var(--line);
-    overflow: visible;
-  }
-  .panel:first-child { border-top: none; padding-top: calc(var(--header-h) + 4rem); }
-  .ruler { display: none; }
-  .hero-scroll-hint { display: none; }
-
-  .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .portrait { width: 180px; height: 220px; }
-  .now-item { grid-template-columns: 1fr; gap: 0.4rem; }
-  .latest-item { grid-template-columns: 1fr; gap: 0.4rem; }
-
-  /* bento collapses to a single readable column */
-  .bento,
-  .bento--intro,
-  .bento--about,
-  .bento--now,
-  .bento--writing,
-  .bento--hello { grid-template-columns: 1fr; max-width: 520px; }
-  .bento--intro .card-intro,
-  .bento--now .card-build,
-  .bento--writing .card-allnotes { grid-row: auto; grid-column: auto; }
-  .card-photo img { min-height: 240px; }
+  .b-tall, .b-med, .b-wide, .b-big { grid-row: auto; grid-column: auto; }
+  .card-intro { justify-content: flex-start; }
+  .card-photo { aspect-ratio: 4 / 5; width: 100%; justify-self: stretch; max-width: 420px; }
+  .hscroll, .scroll-hint, .clock { display: none; }
 }
 
 @media (max-width: 680px) {
