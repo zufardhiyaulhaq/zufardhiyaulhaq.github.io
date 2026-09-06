@@ -106,7 +106,7 @@ spec:
     global:
       podDNSSearchNamespaces:
         - global
-        - "{{ valueOrDefault .DeploymentMeta.Namespace \"default\" }}.global"
+        - {% raw %}"{{ valueOrDefault .DeploymentMeta.Namespace \"default\" }}.global"{% endraw %}
       multiCluster:
         enabled: true
       controlPlaneSecurityEnabled: true
