@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Automatic Certificate creation in Private Public Key Infrastructure (PKI)
+tags: [security]
 ---
 
 Over the past one week ago, I try to spike and setup private PKI in my lab environment mostly for ingress and gateway testing. There is a reason why I don't go with public one like Let's Encrypt because you need to buy a domain and host in ACME supported DNS01 challenge like AWS route53 and the pricing is too high.

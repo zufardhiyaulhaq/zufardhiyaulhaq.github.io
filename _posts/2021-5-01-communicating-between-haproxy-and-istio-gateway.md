@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Configure Istio Gateway as Haproxy backend
+tags: [istio, networking]
 ---
 
 I have been working and using Istio for the past 1 year. Istio provide tons of feature, and I heavily using Istio Ingress gateway to expose my services to publics. There is an use cases when some other proxy like HAProxy is pointing to Istio gateway. The configuration on HAProxy might changes because Istio Gateway implement Server Name Indicator (SNI). Server Name Indicator will provide proxy to be apply to serve multiple domain on single proxy.

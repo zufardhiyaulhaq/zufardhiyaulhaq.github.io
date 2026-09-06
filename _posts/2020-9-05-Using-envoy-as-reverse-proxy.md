@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Leverage Envoy as a reverse proxy
+tags: [networking]
 ---
 
 Since in the last six month, I mainly working on Istio that leverage envoy as the sidecar proxy and require to understand the Envoy. I decide to leverage Envoy as reverse proxy in my lab environment. Why not? Envoy as proxy is mature and already graduate from CNCF and easy to configure.

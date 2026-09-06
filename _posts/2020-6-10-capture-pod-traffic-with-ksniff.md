@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Capture pod packet with sniff
+tags: [kubernetes, networking, observability]
 ---
 
 I have hard time thinking how easily capture packet request in Kubernetes pod object when trying to debug mutual TLS communication between pod. I can run tcpdump inside the pod, but sometime pod only have read only access and its hard to see the tcpdump. With tcpdump, I also can generate wireshark format to analyze better, but its not funny to copy the result of tcpdump from pod to or desktop everytime I want to capture.

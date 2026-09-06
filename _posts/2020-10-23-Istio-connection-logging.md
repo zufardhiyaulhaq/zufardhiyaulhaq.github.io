@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Istio Access/connection logging
+tags: [istio, observability]
 ---
 
 There are times when we really struggle to troubleshoot the networking behaviour of our applications. The reason behind this is because the application not omitted a networking log stuff, for example what protocol they used, what the source & destination IP, what is the domain they call, etc.

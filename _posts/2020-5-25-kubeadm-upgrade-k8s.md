@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Renew Kubeadm Kubernetes cluster certificate
+tags: [kubernetes, security]
 ---
 
 Kubernetes installed with kubeadm can be upgraded with simple command from kubeadm itself.

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Integrate mouse and keyboard to PS4 with GIMX
+tags: [hardware]
 ---
 
 GIMX is an open source gaming adapter that make your computer as an adapter/hub for your gaming devices. In this blog, I will try to integrate mouse and keyboard to PS4 and using Battlefield 5 as the example. Beside computer, you also need an component to connect your computer PS4 (GIMX adapter).

@@ -1,0 +1,8 @@
+<header class="site-header">
+  <a class="wordmark" href="{{ '/' | relative_url }}"><span class="dot"></span>{{ site.name }}</a>
+  <nav class="site-nav">
+    <a href="{{ '/writing/' | relative_url }}"{% if page.nav == 'writing' %} aria-current="page"{% endif %}>Writing</a>
+    <a href="{{ '/work/' | relative_url }}"{% if page.nav == 'work' %} aria-current="page"{% endif %}>Work</a>
+    <a class="say-hello" href="mailto:{{ site.footer-links.email }}">Say hello</a>
+  </nav>
+</header>

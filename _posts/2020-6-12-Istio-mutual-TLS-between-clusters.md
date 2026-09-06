@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Mutual TLS communication between Istio mesh
+tags: [istio, security]
 ---
 
 Mutual TLS communication is about trusting each other between client and server. It is different from standard TLS that only client need to trust the server. In mutual TLS, server also need to trust client. 
