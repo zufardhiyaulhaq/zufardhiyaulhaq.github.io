@@ -1,0 +1,5 @@
+# All crawlers, including AI/LLM crawlers, are welcome.
+User-agent: *
+Allow: /
+
+Sitemap: https://zufardhiyaulhaq.com/sitemap.xml
