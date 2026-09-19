@@ -2,6 +2,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<link rel="icon" type="image/svg+xml" href="{{ '/favicon.svg' | relative_url }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ '/favicon-32.png' | relative_url }}">
+<link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}">
+
 <title>{% if page.title and page.url != "/" %}{{ page.title }} · {{ site.name }}{% else %}{{ site.name }} · {{ site.description }}{% endif %}</title>
 
 {% assign og_desc = page.description | default: page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 200 | escape %}
