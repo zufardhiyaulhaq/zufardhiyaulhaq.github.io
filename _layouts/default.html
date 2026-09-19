@@ -6,5 +6,6 @@
 <body class="{{ page.body_class }}">
 {{ content }}
 <script src="{{ '/assets/js/main.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+{% include mermaid.html %}
 </body>
 </html>

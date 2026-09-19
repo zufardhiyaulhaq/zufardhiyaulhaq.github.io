@@ -1017,7 +1017,8 @@ a.card-talk:hover h3 { color: var(--accent); }
   line-height: 1.6;
 }
 .prose pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
-.prose .highlight { margin: 0; background: none; }
+.prose div.highlight, .prose figure.highlight { margin: 0; background: none; }
+.prose pre.highlight { background: #1a1a1f; }
 .prose .highlight pre, .prose figure.highlight pre { margin: 0; }
 .prose figure.highlight { margin: 0; }
 .prose hr { border: none; border-top: 1px solid var(--line); margin: 2.4rem 0; }
