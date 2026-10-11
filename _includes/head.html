@@ -14,6 +14,7 @@
 <meta name="description" content="{{ og_desc }}">
 <meta name="author" content="{{ site.name }}">
 <link rel="canonical" href="{{ page.url | absolute_url }}">
+{% if page.date %}<link rel="alternate" type="text/markdown" href="/{{ page.url | replace: '/','' }}.md" title="Markdown version">{% endif %}
 
 <meta property="og:site_name" content="{{ site.name }}">
 <meta property="og:type" content="{% if page.date %}article{% else %}website{% endif %}">

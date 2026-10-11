@@ -13,8 +13,10 @@ sitemap: false
 - [Notes: TIL and engineering guides](https://notes.zufardhiyaulhaq.com/) (map for LLMs: https://notes.zufardhiyaulhaq.com/llms.txt)
 
 ## Writing
+
+Each post has a plain-markdown version at the same path with a `.md` extension.
 {% for post in site.posts %}
-- [{{ post.title | strip_newlines }}]({{ base }}{{ post.url }}) ({{ post.date | date: "%Y-%m-%d" }})
+- [{{ post.title | strip_newlines }}]({{ base }}{{ post.url }}) ({{ post.date | date: "%Y-%m-%d" }}) · [md]({{ base }}/{{ post.url | replace: '/','' }}.md)
 {%- endfor %}
 
 ## Work
