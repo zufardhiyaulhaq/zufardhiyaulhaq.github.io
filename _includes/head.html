@@ -29,9 +29,62 @@
 <meta name="twitter:description" content="{{ og_desc }}">
 <meta name="twitter:image" content="{{ og_image | absolute_url }}">
 
+{% if page.url == "/" %}<link rel="preload" as="image" href="{{ '/images/portrait.webp' | relative_url }}" type="image/webp" fetchpriority="high">{% endif %}
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+{% assign font_href = "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap" %}
+<link rel="stylesheet" href="{{ font_href }}" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="{{ font_href }}"></noscript>
 
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ '/feed.xml' | relative_url }}">
+
+{% assign ld_desc = page.description | default: page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 200 %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "{{ site.url }}/#person",
+      "name": {{ site.name | jsonify }},
+      "url": "{{ site.url }}/",
+      "image": "{{ site.url }}/images/portrait.jpg",
+      "jobTitle": "Senior Engineering Manager",
+      "worksFor": { "@type": "Organization", "name": "GoTo Financial" },
+      "knowsAbout": ["Kubernetes", "Istio", "Service Mesh", "API Gateway", "Networking", "Cloud Infrastructure"],
+      "sameAs": [
+        "https://github.com/zufardhiyaulhaq",
+        "https://www.linkedin.com/in/zufardhiyaulhaq",
+        "https://twitter.com/zufardhiyaulhaq",
+        "https://www.instagram.com/zufardhiyaulhaq",
+        "https://www.facebook.com/zufardhiyaulhaq"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.url }}/#website",
+      "url": "{{ site.url }}/",
+      "name": {{ site.name | jsonify }},
+      "description": {{ site.description | jsonify }},
+      "inLanguage": "en",
+      "publisher": { "@id": "{{ site.url }}/#person" }
+    }{% if page.date %},
+    {
+      "@type": "BlogPosting",
+      "@id": "{{ page.url | absolute_url }}#article",
+      "mainEntityOfPage": "{{ page.url | absolute_url }}",
+      "headline": {{ page.title | jsonify }},
+      "description": {{ ld_desc | jsonify }},
+      "image": "{{ og_image | absolute_url }}",
+      "datePublished": "{{ page.date | date_to_xmlschema }}",
+      "dateModified": "{{ page.date | date_to_xmlschema }}",
+      "inLanguage": "en",
+      "keywords": {{ page.tags | join: ", " | jsonify }},
+      "author": { "@id": "{{ site.url }}/#person" },
+      "publisher": { "@id": "{{ site.url }}/#person" }
+    }{% endif %}
+  ]
+}
+</script>

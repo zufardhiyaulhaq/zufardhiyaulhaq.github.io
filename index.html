@@ -18,8 +18,12 @@ body_class: is-home
     </span>
   </div>
   <div class="card card-photo b-big">
-    <img src="{{ site.portrait | default: site.avatar | relative_url }}" alt="{{ site.name }}"
-         onerror="this.onerror=null;this.src='{{ site.avatar }}';">
+    <picture>
+      <source srcset="{{ '/images/portrait.webp' | relative_url }}" type="image/webp">
+      <img src="{{ site.portrait | default: site.avatar | relative_url }}" alt="{{ site.name }}"
+           width="799" height="799" fetchpriority="high" decoding="async"
+           onerror="this.onerror=null;this.src='{{ site.avatar }}';">
+    </picture>
   </div>
 
   <!-- Skills -->

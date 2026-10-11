@@ -1,5 +1,6 @@
 # All crawlers, including AI/LLM crawlers, are welcome.
 User-agent: *
 Allow: /
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 
 Sitemap: https://zufardhiyaulhaq.com/sitemap.xml
