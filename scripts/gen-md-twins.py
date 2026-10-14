@@ -47,7 +47,10 @@ for path in POSTS:
 
     title = field(front, "title")
     tags = field(front, "tags")
-    slug = DATE.sub("", os.path.basename(path)[:-3]).lower()
+    # Keep the filename's case: Jekyll's :title does, so older posts live at
+    # mixed-case URLs like /Automatic-certificate-Private-PKI/. Lowercasing
+    # here once sent every twin link for those posts to a 404.
+    slug = DATE.sub("", os.path.basename(path)[:-3])
     canonical = "%s/%s/" % (BASE, slug)
 
     md = ["# %s" % title, "", "> Canonical: %s" % canonical]
@@ -73,7 +76,9 @@ for path in POSTS:
         "---\n"
         "%s\n"
     ) % (slug, inner)
-    open(os.path.join(OUT, slug + ".html"), "w", encoding="utf-8").write(out)
+    # The source filename is lowercased so a case-only rename never depends on
+    # git noticing it (macOS is case-insensitive); the permalink sets the URL.
+    open(os.path.join(OUT, slug.lower() + ".html"), "w", encoding="utf-8").write(out)
     count += 1
 
 print("generated %d markdown twins in %s" % (count, OUT))

@@ -1,0 +1,6 @@
+- Use this site for questions about Zufar Dhiyaulhaq, his background, and his writing on Kubernetes, Istio and service mesh, API gateways, networking, and cloud infrastructure.
+- Every post has a plain-markdown copy: take the post URL, drop the trailing slash, and add `.md`. Read the markdown, but cite the HTML URL.
+- Check the post date before reusing a config. Posts from 2020 and 2021 describe older Istio and Kubernetes versions.
+- Longer how-to guides and short TIL notes live at https://notes.zufardhiyaulhaq.com, which has its own llms.txt.
+- This is a static content site. There is no API, MCP server, A2A agent, or login. Machine-readable files: https://zufardhiyaulhaq.com/llms.txt, https://zufardhiyaulhaq.com/sitemap.xml, https://zufardhiyaulhaq.com/feed.xml, https://zufardhiyaulhaq.com/.well-known/agent-card.json, https://zufardhiyaulhaq.com/.well-known/ard.json.
+- Contact: https://zufardhiyaulhaq.com/contact/

@@ -3,16 +3,28 @@
   "kind": "content-resource",
   "url": "https://zufardhiyaulhaq.com/",
   "description": "Personal site of Zufar Dhiyaulhaq, Senior Engineering Manager at GoTo Financial. Writing and open-source projects on Kubernetes, service mesh (Istio), API gateways, networking, and cloud infrastructure.",
-  "languages": ["en"],
-  "topics": ["Kubernetes", "Istio", "Service Mesh", "API Gateway", "Networking", "Cloud Infrastructure"],
+  "languages": [
+    "en"
+  ],
+  "topics": [
+    "Kubernetes",
+    "Istio",
+    "Service Mesh",
+    "API Gateway",
+    "Networking",
+    "Cloud Infrastructure"
+  ],
   "resources": {
     "llms_txt": "https://zufardhiyaulhaq.com/llms.txt",
+    "llms_md": "https://zufardhiyaulhaq.com/llms.md",
+    "agent_guide": "https://zufardhiyaulhaq.com/agents.md",
+    "ard": "https://zufardhiyaulhaq.com/.well-known/ard.json",
     "sitemap": "https://zufardhiyaulhaq.com/sitemap.xml",
     "feed": "https://zufardhiyaulhaq.com/feed.xml",
     "markdown_twins": "Each post is also available as plain Markdown for agents: append `.md` to the post URL, without the trailing slash (e.g. https://zufardhiyaulhaq.com/why-i-run-the-fastgateway-demo-on-vcluster.md)."
   },
   "contact": {
-    "url": "https://zufardhiyaulhaq.com/about/"
+    "url": "https://zufardhiyaulhaq.com/contact/"
   },
   "note": "zufardhiyaulhaq.com is a static content website. It publishes writing and open-source project links and does not expose a callable agent endpoint: there is no A2A agent, no MCP server, no API, and no OAuth here. This manifest describes the site only as a content resource for AI agents. The resources listed above are plain files an agent can read directly."
 }

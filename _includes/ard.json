@@ -1,0 +1,53 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Zufar Dhiyaulhaq"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:zufardhiyaulhaq.com:content:llms",
+      "displayName": "Site index for LLMs",
+      "type": "text/markdown",
+      "url": "https://zufardhiyaulhaq.com/llms.md",
+      "description": "Markdown index of the site: who Zufar Dhiyaulhaq is, every blog post with a link to its markdown copy, and his products and open-source projects.",
+      "representativeQueries": [
+        "who is Zufar Dhiyaulhaq",
+        "what has Zufar Dhiyaulhaq written about Istio and Kubernetes",
+        "list Zufar Dhiyaulhaq's open-source projects"
+      ]
+    },
+    {
+      "identifier": "urn:air:zufardhiyaulhaq.com:content:agent-guide",
+      "displayName": "Agent guide",
+      "type": "text/markdown",
+      "url": "https://zufardhiyaulhaq.com/agents.md",
+      "description": "How AI agents should read and cite this site: when to use it, where the markdown copies are, and which posts are old.",
+      "representativeQueries": [
+        "how should an AI agent cite zufardhiyaulhaq.com",
+        "where is the markdown version of Zufar Dhiyaulhaq's blog posts"
+      ]
+    },
+    {
+      "identifier": "urn:air:zufardhiyaulhaq.com:content:feed",
+      "displayName": "Blog feed",
+      "type": "application/atom+xml",
+      "url": "https://zufardhiyaulhaq.com/feed.xml",
+      "description": "Atom feed of the latest posts.",
+      "representativeQueries": [
+        "latest blog posts by Zufar Dhiyaulhaq",
+        "subscribe to Zufar Dhiyaulhaq's writing"
+      ]
+    },
+    {
+      "identifier": "urn:air:zufardhiyaulhaq.com:site:agent-card",
+      "displayName": "Site description",
+      "type": "application/json",
+      "url": "https://zufardhiyaulhaq.com/.well-known/agent-card.json",
+      "description": "Content-resource description of the site. The site is static: no API, MCP server, A2A agent, or login.",
+      "representativeQueries": [
+        "what is zufardhiyaulhaq.com",
+        "does zufardhiyaulhaq.com have an API or MCP server"
+      ]
+    }
+  ]
+}

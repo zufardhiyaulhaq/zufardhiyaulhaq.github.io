@@ -3,30 +3,4 @@ layout: null
 permalink: /llms.txt
 sitemap: false
 ---
-{%- assign base = "https://zufardhiyaulhaq.com" -%}
-# Zufar Dhiyaulhaq
-
-> Personal site of Zufar Dhiyaulhaq. Writing and open-source projects on Kubernetes, service mesh, networking, and cloud infrastructure.
-
-- [Home]({{ base }}/)
-- [About]({{ base }}/about/)
-- [Notes: TIL and engineering guides](https://notes.zufardhiyaulhaq.com/) (map for LLMs: https://notes.zufardhiyaulhaq.com/llms.txt)
-
-## Writing
-
-Each post has a plain-markdown version at the same path with a `.md` extension.
-{% for post in site.posts %}
-- [{{ post.title | strip_newlines }}]({{ base }}{{ post.url }}) ({{ post.date | date: "%Y-%m-%d" }}) · [md]({{ base }}/{{ post.url | replace: '/','' }}.md)
-{%- endfor %}
-
-## Work
-
-### Products
-{% for p in site.data.projects.products %}
-- [{{ p.name }}]({{ p.url }}): {{ p.description | strip_newlines }}
-{%- endfor %}
-
-### Open source
-{% for p in site.data.projects.opensource %}
-- [{{ p.name }}]({{ p.url }}) ({{ p.lang }}, {{ p.stars }} stars): {{ p.description | strip_newlines }}
-{%- endfor %}
+{% include llms-body.md %}

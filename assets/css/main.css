@@ -560,7 +560,7 @@ a.card:hover .go svg { transform: translateX(3px); }
   color: var(--muted);
   margin-bottom: 0.7rem;
 }
-.card-note h3 {
+.card-note h2 {
   font-weight: 500;
   font-size: 1.12rem;
   line-height: 1.22;
@@ -1103,6 +1103,8 @@ a.card-talk:hover h3 { color: var(--accent); }
   text-transform: uppercase;
   color: var(--muted);
 }
+.footer-base a { color: inherit; text-decoration: none; }
+.footer-base a:hover { color: var(--accent); }
 
 /* =========================================================================
    Responsive — home collapses to honest vertical stack

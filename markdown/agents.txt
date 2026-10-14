@@ -1,0 +1,12 @@
+---
+layout: null
+permalink: /agents.md
+sitemap: false
+---
+# Agent guide for zufardhiyaulhaq.com
+
+Personal site of Zufar Dhiyaulhaq: writing and open-source projects on Kubernetes, service mesh, networking, and cloud infrastructure. The full index is at https://zufardhiyaulhaq.com/llms.txt.
+
+## When to use this site
+
+{% include agent-guide.md %}
